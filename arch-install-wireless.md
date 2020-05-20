@@ -1,13 +1,19 @@
 
 # Wireless
 
-https://wiki.archlinux.org/index.php/Network_configuration/Wireless
-https://wiki.archlinux.org/index.php/Wpa_supplicant
-https://wiki.archlinux.org/index.php/Netctl
-https://zestedesavoir.com/billets/3113/archlinux-et-installation-en-wifi/
+
+## Reference
+
+More information:
+- https://wiki.archlinux.org/index.php/Network_configuration/Wireless
+- https://wiki.archlinux.org/index.php/Wpa_supplicant
+- https://wiki.archlinux.org/index.php/Netctl
+- https://zestedesavoir.com/billets/3113/archlinux-et-installation-en-wifi/
 
 
-Also check the output of the ip link command to see if a wireless interface was created; usually the naming of the wireless network interfaces starts with the letter "w", e.g. wlan0 or wlp2s0. Then bring the interface up with:
+## Set interface
+
+Check the output of the ip link command to see if a wireless interface was created; usually the naming of the wireless network interfaces starts with the letter "w", e.g. wlan0 or wlp2s0. Then bring the interface up with:
 ```
 # ip link set interface up
 ```
