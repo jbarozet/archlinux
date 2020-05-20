@@ -38,19 +38,17 @@ Just start the Display Manager (do not enable for now)
 # systemctl start gdm.service
 ```
 
-If everything looks good, enable graphical login.
-To enable graphical login, enable the appropriate systemd service. 
-For example, for GDM, enable gdm.service.
+If everything looks good, enable graphical login with the appropriate systemd service. 
+For example, for GDM, enable gdm.
 
 ```
-# systemctl enable gdm.service
+# systemctl enable gdm
 ```
 
 Reboot and you should have the login window automatically started:
-	• Select user
-	• Click on Settings
-	• Then pick Gnome - this is Gnome with Wayland
-
+- Select user
+- Click on Settings
+- Then pick Gnome - this is Gnome with Wayland
 
 
 
@@ -58,8 +56,6 @@ Reboot and you should have the login window automatically started:
 
 Installer Trizen ou Yay pour compléter Pacman.
 On peut utiliser trizen (écrit en perl) ou Yay (écrit en Go) à la place du vieillissant yaourt.
-
-Note : actions à effectuer en tant qu'utilisateur classique
 
 Install Trizen :
 
