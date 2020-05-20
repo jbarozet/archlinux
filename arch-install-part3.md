@@ -8,9 +8,9 @@
 # pacman -S gnome gnome-extra 
 ```
 
-Optionally: add telepathy package. Add support for online accounts
-gnome-software is now part of gnome meta package
-
+Notes:
+- Optionally: add telepathy package. Add support for online accounts
+- gnome-software is now part of gnome meta package
 
 
 
@@ -23,14 +23,11 @@ A display manager, or login manager, is typically a graphical user interface th
 ```
 
 
-
 ## Exit and log as user jmb
 
 ```
 # exit
 ```
-
-
 
 
 ## Start GDM (Display Manager)
