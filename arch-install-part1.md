@@ -11,7 +11,21 @@
 
 ### Boot the live environment
 
-Use an USB key.
+https://wiki.archlinux.org/index.php/USB_flash_installation_media
+
+Using dd - This method is recommended due to its simplicity.
+Check what is your device, this will irrevocably destroy all data on /dev/sdx
+
+Check your device with:
+```
+# df
+```
+
+Create an USB installation key with the following command.
+```
+# sudo dd bs=4M if=/home/jmb/softwares/archlinux-2020.05.01-x86_64.iso of=/dev/sda1 status=progress oflag=sync
+```
+
 
 
 ### Set the keyboard layout
