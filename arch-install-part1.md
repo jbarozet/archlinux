@@ -16,14 +16,19 @@ https://wiki.archlinux.org/index.php/USB_flash_installation_media
 Using dd - This method is recommended due to its simplicity.
 Check what is your device, this will irrevocably destroy all data on /dev/sdx
 
-Check your device with:
-```
-# df
-```
+Find out the name of your USB drive with lsblk (or df). Make sure that it is not mounted.
 
-Create an USB installation key with the following command.
+Run the following command, replacing /dev/sdx with your drive, e.g. /dev/sdb. (Do not append a partition number, so do not use something like /dev/sdb1) 
 ```
-# sudo dd bs=4M if=/home/jmb/softwares/archlinux-2020.05.01-x86_64.iso of=/dev/sda1 status=progress oflag=sync
+# sudo dd bs=4M if=/home/jmb/softwares/archlinux-2020.05.01-x86_64.iso of=/dev/sda status=progress oflag=sync
+```
+Check that you have the disk correctly partionned:
+```
+# lsblk
+sda                       8:0    1  29,3G  0 disk  
+├─sda1                    8:1    1   652M  0 part  
+└─sda2                    8:2    1    64M  0 part  
+#
 ```
 
 
