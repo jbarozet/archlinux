@@ -84,12 +84,12 @@ For more information: [Arch Boot Process](https://wiki.archlinux.org/index.php/A
 
 Use fdisk or even better cfdisk with the recommended Partitions:
 
-|    Partition      |     Mount        |        Size            |    File System      |
-|:------------- |:-------- -----|:--------- -----|:-----------------|
-|  /dev/vda1     |   /boot            |  200M               |   ext4                    |
-|  /dev/vda2     |                         |  1G                    |   swap                  |
-|  /dev/vda3     |  /                     |  25G min           |   ext4                   |
-|  /dev/vda4     |   /home          |  Rest of disk     |   ext4                    |
+|    Partition   |     Mount     |      Size       |   File System   |
+|--------------- |---------------|-----------------|-----------------|
+|  /dev/vda1     |   /boot       |  200M           |   ext4          |
+|  /dev/vda2     |               |  1G             |   swap          |
+|  /dev/vda3     |  /            |  25G min        |   ext4          |
+|  /dev/vda4     |   /home       |  Rest of disk   |   ext4          |
 
 ```
 # fdisk /dev/sda
