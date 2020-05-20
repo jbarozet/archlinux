@@ -22,19 +22,22 @@ ForwardToSyslog=yes
 
 ## Video
 
-Il faut ensuite choisir le pilote pour le circuit vidéo. Voici les principaux pilotes, sachant que le paquet xf86-video-vesa englobe une énorme partie des circuits graphiques, dont ceux non listés dans le tableau un peu plus loin. En cas de doute : https://wiki.archlinux.org/index.php/Xorg#Driver_installation
+Install drivers for video cards. xf86-video-vesa package includes a lot of drivers.
+Check this for more information: https://wiki.archlinux.org/index.php/Xorg#Driver_installation
 
-Pour Nvidia, c’est un casse-tête au niveau des pilotes propriétaires. Le plus simple est de se référer au wiki d'Archlinux : https://wiki.archlinux.org/index.php/NVIDIA. Et si vous avez la technologie Optimus : https://wiki.archlinux.org/index.php/NVIDIA_Optimus
+Nvidia 
+- check wiki ttps://wiki.archlinux.org/index.php/NVIDIA. 
+- ptimus : https://wiki.archlinux.org/index.php/NVIDIA_Optimus
 
-Si vous faites une installation dans VirtualBox, il faut deux paquets. En plus de xf86-video-vesa, il faut le paquet virtualbox-guest-utils. Cependant, il y a deux choix qui arrivent pour ce paquet.
+VirtualBox
+- In addition to xf86-video-vesa, install virtualbox-guest-utils
 
-Ce qui donne :
 ```
 pacman -S xf86-video-vesa
 pacman -S virtualbox-guest-utils
 ```
 
-La prise en charge des modules noyau se fait avec la commande systemctl suivante :
+Enable kernel modules:
 ```
 systemctl enable vboxservice
 ```
@@ -48,11 +51,12 @@ pacman -S ttf-{bitstream-vera,liberation,freefont,dejavu} freetype2
 
 Luke Smith:
 - ttl-linux-libertine
-
+- console: ttf-inconsolata
+- 
 
 ## Create User
 
-On crée un utilisateur avec la commande suivante, qui sera indispensable pour appliquer un des addenda si vous ne voulez pas utiliser Gnome.
+Create a user and add to wheel group. Add password.
 
 ```
 # useradd -m -g wheel -c 'Jean-Marc Barozet' -s /bin/bash jmb 
@@ -62,8 +66,7 @@ On crée un utilisateur avec la commande suivante, qui sera indispensable pour a
 
 ## Modify SUDOERS
 
-Pour que l’on puisse accéder en tant qu’utilisateur classique aux droits complets sur la machine de manière temporaire.
-Edit /etc/sudoers using visudo command.
+To give access to sudo command, change the sudoers using command visudo. Do not update directly /etc/sudoers.
 ```
 EDITOR=vim visudo
 ```
@@ -72,16 +75,22 @@ EDITOR=vim visudo
 
 ## Enable Services
 
-systemd being used, here is a list of services that may have to be activated.
+systemd being used, here is a list of services that may have to be activated:
+- syslog
+- cron
+- avahi, avahi-dnsconfd: CUPS
+- org.cups.cupsd: printers
+- bluetooth
+- NTP to synchronize clock from the network
 
 ```
-systemctl enable syslog-ng@default → *gestion des fichiers d’enregistrement d’activité*
-systemctl enable cronie → *pour les tâches récurrentes*
-systemctl enable avahi-daemon → *dépendance de Cups*
-systemctl enable avahi-dnsconfd → *autre dépendance de Cups*
-systemctl enable org.cups.cupsd → *cups pour les imprimantes*
-systemctl enable bluetooth → *uniquement si on a du matériel bluetooth*
-systemctl enable ntpd → *pour synchroniser l’heure en réseau.*
+systemctl enable syslog-ng@default
+systemctl enable cronie
+systemctl enable avahi-daemon
+systemctl enable avahi-dnsconfd
+systemctl enable org.cups.cupsd
+systemctl enable bluetooth
+systemctl enable ntpd
 ```
 
 
