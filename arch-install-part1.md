@@ -159,12 +159,12 @@ If you created a partition for swap, initialize it with mkswap:
 
 A GPT partition is required to boot in UEFI mode. Use tool: cgdisk
 
-|    Partition      |     Mount        |        Size           |    File System      |
-|:--------------------- |:---------------------|:-----------------------|:------------------------ --|
-|  /dev/vda1     |   /                    |  20G min          |   ext4                    |
-|  /dev/vda2     |   /boot/efi      |  128M               |   fat32                  |
-|  /dev/vda3     |                         |  1G min            |   swap                  |
-|  /dev/vda4     |   /home          |  Rest of disk    |   ext4                    |
+|    Partition   |     Mount        |       Size       |  File System |
+|----------------|------------------|:-----------------|:-------------|
+|  /dev/vda1     |   /              |  20G min         |   ext4       |
+|  /dev/vda2     |   /boot/efi      |  128M            |   fat32      |
+|  /dev/vda3     |                  |  1G min          |   swap       |
+|  /dev/vda4     |   /home          |  Rest of disk    |   ext4       |
 
 Note:
 - /boot/efi partition is labelled EF00. 

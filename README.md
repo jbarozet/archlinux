@@ -1,8 +1,8 @@
 # Arch Linux Installation
 
-+++
-/[1] arch-install-part1.md
-+++
-/[2] arch-install-part2.md
-+++
-/[3] arch-install-part3.md
+Installation Notes:
+- [Base system](https://github.com/jbarozet/archlinux/arch-install-part1.md)
+- [Finalize base system](https://github.com/jbarozet/archlinux/arch-install-part2.md)
+- [Gnome](https://github.com/jbarozet/archlinux/arch-install-part3.md)
+- [Gnome custom](https://github.com/jbarozet/archlinux/arch-install-part4.md)
+- [Window Manager](https://github.com/jbarozet/archlinux/arch-install-part5.md)
