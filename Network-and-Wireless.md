@@ -7,6 +7,7 @@ Options for networking:
 - netctl
 - NetworkManager 
 
+<br>
 
 ## Netctl
 
@@ -20,11 +21,13 @@ Summary:
 - Connect with netcl 
 - Check for the status using iw dev
 
-
-### Activate wifi
+To get the name of your wireless interface do:
+```bash
+# iw dev
+```
 
 Use wifi-menu as root to generate the profile file in /etc/netctl/
-```
+```bash
 # wifi-menu
 ```
 
@@ -40,32 +43,26 @@ IP=dhcp
 Key=xxxxxxxxxxxxxxxx
 ```
 
-### If having issues
-
-Optional: You may have issues to start wireless profile, so this is a workaround.
-
-Stop dhcpcd service
-```
-# systemctl stop dhcpcd.service 
-# systemctl disable dhcpcd.service
-# killall dhcpcd
+Check you are successfully associated to your wifi:
+```bash
+# iw dev
+# iw dev wlan0 link
 ```
 
-Set link down
+At this point you have access to the network - Check by typing:
+```bash
+# ping 8.8.8.8
+# ping archlinux.org
 ```
-# ip link set wlan0 down
-```
-
-### Establish the connection
 
 Once you have created your profile, attempt to establish a connection, where profile is only the profile name, not the full path:
 
-```
+```bash
 # netctl start wlan0_home
 ```
 
 Check that you're connected
-```
+```bash
 # iw dev wlan0 link
 ```
 
@@ -74,6 +71,7 @@ Notes:
 - Removed the use of netctl enable <profile>. This works, but will make your boot time slower (Arch will wait for the connection to become successful before finishing the boot process).
 
 
+<br>
 
 ## NetworkManager
 
@@ -93,125 +91,103 @@ NetworkManager sits in the background and makes connections to known networks. 
 ### Check for any conflict
 
 You must ensure that no other service that wants to configure the network is running; in fact, multiple networking services will conflict. You can find a list of the currently running services with:
-```
+```bash
 # systemctl --type=service 
+# systemctl list-unit-files --state=enabled
 ```
 
-and then stop them. 
+Stop netctl and wpa_supplicant (if needed)
+```bash
+# systemctl stop netctl@wlan0_home.service
+# systemctl stop wpa_supplicant.service
+```
 
 Install and start NetManager
-```
+```bash
 # pacman -Syy networkmanager
 # systemctl enable NetworkManager
 ```
 
-
-### Check Wi-Fi Radio Status
-
 Check if WiFi radio status. This can be done by executing the command below;
-```
-nmcli radio wifi
+```bash
+# nmcli radio wifi
 ```
 
 If the WiFi radio is disabled, then you can enable it by running the command below;
-```
-nmcli radio wifi on
-```
-
-You can as well check status of the network interface cards by running the command below;
-```
-nmcli dev status                 
- DEVICE  TYPE      STATE         CONNECTION 
- wlp2s0  wifi      disconnected  --         
- enp1s0  ethernet  unavailable   --         
- lo      loopback  unmanaged     -- 
+```bash
+# nmcli radio wifi on
 ```
 
-### Check Available Wi-Fi Access Points
-NetworkManager scans Wi-Fi networks periodically. To check if the SSID of Wi-Fi access point you want to connect to can be seen your Linux system, run the command below;
-
-```
-nmcli dev wifi list             
- SSID            MODE   CHAN  RATE       SIGNAL  BARS  SECURITY 
- Kmibey          Infra  2     54 Mbit/s  100     ▂▄▆█  WPA2     
- Ncheches house  Infra  1     54 Mbit/s  37      ▂▄_   WPA2 
+Check status of network interfaces
+```bash
+# nmcli dev status                 
 ```
 
- If you are unable to see the SSID of the Wi-Fi access point you want to connect to, you can run a rescan by executing the command below. After that, check again to if you can see the Access point SSID by re-executing the command above.
-
+Display the list of SSID
+```bash
+# nmcli dev wifi list
 ```
-nmcli dev wifi rescan
+
+ If SSID not listed, rescan
+```bash
+# nmcli dev wifi rescan
 ```
 
-
-### Connect to WiFi using NMCLI
-
-Assuming that you already have the SSID and the connection password for the Access point you want to connect to, then execute the command below to connect.
-```
-sudo nmcli dev wifi connect Kmibey password 'mypassword'
- Device 'wlp2s0' successfully activated with 'a1900bed-baa9-47a3-affb-b640d0effe5d'.
+Connect to WiFi
+```bash
+# nmcli dev wifi connect Livebox-B00A password 'mypassword'
 ```
 
 If you do not want to display password in plain text, then you can pass the –ask option as shown below.
-```
-sudo nmcli --ask dev wifi connect Kmibey
- Password: 
- Device 'wlp2s0' successfully activated with 'f747251b-1346-48a2-ae25-1b6fd6243984'.
+```bash
+# nmcli --ask dev wifi connect Livebox-B00A
 ```
 
-
-### Check Device status
-
-```
-nmcli dev status                                        
- DEVICE  TYPE      STATE        CONNECTION 
- wlp2s0  wifi      connected    Kmibey     
- enp1s0  ethernet  unavailable  --         
- lo      loopback  unmanaged    -- 
+Check Device status
+```bash
+# nmcli dev status
 ```
 
-### Check Active Connections
-
-Once you have successfully connected to your AP, then you can check active connections using the command below;
-```
-nmcli con show --active                                
+Check Connections (--active to only list ones)
+```bash
+# nmcli con show                               
  NAME    UUID                                  TYPE             DEVICE 
  Kmibey  a1900bed-baa9-47a3-affb-b640d0effe5d  802-11-wireless  wlp2s0
 ```
 
-You can as well omit the –active option to list all the connections and their status.
 
 
 ### Delete Established Connections
 
 If you need to delete the connection that is already established, you can specify the connection UUID or the connection name. To obtain the connection UUID or the username, run the nmcli con show command as shown below;
 
-```
-nmcli con sh
+```bash
+# nmcli con sh
  NAME                UUID                                  TYPE             DEVICE 
  Kmibey              41dc9830-dd20-4deb-92be-371bfb5d16f0  802-11-wireless  wlp2s0 
  Beats               949762b0-c6e0-4004-918a-55fb6bcf6610  802-11-wireless  --
 ```
 
 To delete using a connection using connection name;
-```
-sudo nmcli con del Kmibey
+```bash
+# sudo nmcli con del Kmibey
  Connection 'Kmibey' (41dc9830-dd20-4deb-92be-371bfb5d16f0) successfully deleted.
 ```
 
 To delete a connection using connection UUID;
-```
-sudo nmcli con del 41dc9830-dd20-4deb-92be-371bfb5d16f0
+```bash
+# sudo nmcli con del 41dc9830-dd20-4deb-92be-371bfb5d16f0
  Connection 'Kmibey' (41dc9830-dd20-4deb-92be-371bfb5d16f0) successfully deleted.
 ```
 
 You can also take down or bring up a previous connection using the commands below respectively.
-```
-nmcli con down <SSID or UUID>
-nmcli con up <SSID or UUID>
+```bash
+# nmcli con down <SSID or UUID>
+# nmcli con up <SSID or UUID>
 ```
 
 
+<br>
 
 
 ## Networkd
@@ -222,3 +198,22 @@ In order to connect to a wireless network with systemd-networkd, a wireless ada
 
 The systemd package is part of the default Arch installation and contains all needed files to operate a wired network. Wireless adapters can be setup by other services, such as wpa_supplicant
 
+
+
+## Troubleshooting
+
+If having issues
+
+Optional: You may have issues to start wireless profile, so this is a workaround.
+
+Stop dhcpcd service
+```bash
+# systemctl stop dhcpcd.service 
+# systemctl disable dhcpcd.service
+# killall dhcpcd
+```
+
+Set link down
+```bash
+# ip link set wlan0 down
+```
