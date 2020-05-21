@@ -1,14 +1,14 @@
 # Arch Installation Part4 (Gnome Customization)
 
-
-
+<br>
 
 ## Windows
 
-On va personnaliser le bureau Gnome en lui ajoutant la date complète et les boutons pour minimiser et maximiser les fenêtres avec Gnome Tweak Tool alias Ajustements.
-
+Gnome Tweak Tool alias Ajustements.
 Windows Title Bars > Title Bars button (ON)
 
+
+<br>
 
 
 ## Wallpapers
@@ -16,15 +16,17 @@ Windows Title Bars > Title Bars button (ON)
 https://www.gnome-look.org
 
 
+<br>
+
 
 ## Install dash-to-dock extension.
 
-This extension moves the dash of the overview.
+This extension moves the dash off the overview.
 So quicker to access. Always there.
 
 Install dash to dock:
 
-```
+```bash
 # sudo pacman -S chrome-gnome-shell
 ```
 
@@ -32,6 +34,7 @@ Then go to:
 https://extensions.gnome.org
 
 
+<br>
 
 
 ## Fonts
@@ -45,11 +48,12 @@ Luke Smith:
 - Console: ttf-inconsolata
 
 
+<br>
 
 
 ## Themes
 
-### Manjaro Themes
+### Themes used by various distributions
 
 Themes used in Manjaro:
 - Applications: Matcha-sea
@@ -57,17 +61,26 @@ Themes used in Manjaro:
 - Icons: Papirus-Dark-Maia
 - Shell: Matcha-sea
 
-matcha-gtk-theme
-matcha-kde-wallpapers
+Themes used in Ubuntu 20.1
+- Applications: Yaru-Dark ? Yaru-Light
+- Cursor: Yaru
+- Icons: Yaru
+- Sound: Yaru
 
-Matcha GBTC Theme (Used in Manjaro, GTK3 theme)
+
+### Matcha Icons
+
+Install (Matcha GBTC Theme - Used in Manjaro, GTK3 theme):
+- matcha-gtk-theme
+- matcha-kde-wallpapers
+
 https://www.gnome-look.org/p/1187179/
 - Matcha-aliz: red version
 - Matcha-azul: blue version
 - Matcha-sea: sea green version
 
 Installation:
-```
+```bash
 # git clone https://github.com/vinceliuice/Matcha-gtk-theme
 # cd Matcha-gtk-theme
 # ./install.sh
@@ -76,14 +89,11 @@ Installation:
 This will copy files in ~/.themes/
 
 
-### Ubuntu 20.1 Themes
+### Papirus-Dark-Maia icons
 
-Themes:
-- Applications: Yaru-Dark ? Yaru-Light
-- Cursor: Yaru
-- Icons: Yaru
-- Sound: Yaru
-
+Ultimate Maia icons:
+https://www.gnome-look.org/s/Gnome/p/1218961
+Download, extract archive and move files to ~/.icons
 
 
 
@@ -91,15 +101,6 @@ Themes:
 
 xcursor-breeze
 
-
-
-### Icons
-
-Papirus-Dark-Maia
-
-Ultimate Maia icons:
-https://www.gnome-look.org/s/Gnome/p/1218961
-Download, extract archive and move files to ~/.icons
 
 
 

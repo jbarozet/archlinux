@@ -1,29 +1,31 @@
 # Arch Installation Part1 (Base System)
 
+<br>
 
 ## POINTERS
 
 [Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide)
 [Installation Guide - Fred Bezies](https://github.com/FredBezies/arch-tuto-installation/blob/master/install.md)
 
+<br>
 
-## PRE-INSTALLATION
+## PREPARE USB INSTALLATION KEY
 
-### Boot the live environment
+[USB Flash Installation](https://wiki.archlinux.org/index.php/USB_flash_installation_media)
 
-https://wiki.archlinux.org/index.php/USB_flash_installation_media
-
-Using dd - This method is recommended due to its simplicity.
-Check what is your device, this will irrevocably destroy all data on /dev/sdx
+Note:
+- Using dd - This method is recommended due to its simplicity.
+- Check what is your device, this will irrevocably destroy all data on /dev/sdx
 
 Find out the name of your USB drive with lsblk (or df). Make sure that it is not mounted.
 
 Run the following command, replacing /dev/sdx with your drive, e.g. /dev/sdb. (Do not append a partition number, so do not use something like /dev/sdb1) 
-```
+```bash
 # sudo dd bs=4M if=/home/jmb/softwares/archlinux-2020.05.01-x86_64.iso of=/dev/sda status=progress oflag=sync
 ```
-Check that you have the disk correctly partionned:
-```
+
+Check that you have the USB disk correctly partionned:
+```bash
 # lsblk
 sda                       8:0    1  29,3G  0 disk  
 ├─sda1                    8:1    1   652M  0 part  
@@ -31,18 +33,22 @@ sda                       8:0    1  29,3G  0 disk
 #
 ```
 
+Boot on the USB key.
 
+<br>
+
+## PRE-INSTALLATION
 
 ### Set the keyboard layout
 
 The default console keymap is US. Available layouts can be listed with:
 
-```
+```bash
 # ls /usr/share/kbd/keymaps/**/*.map.gz
 ```
 
 To modify the layout, append a corresponding file name to loadkeys(1), omitting path and file extension. For example, to set a German keyboard layout:
-```
+```bash
 # loadkeys de-latin1
 ```
 Console fonts are located in /usr/share/kbd/consolefonts/ and can likewise be set with setfont(8).
@@ -52,21 +58,21 @@ Console fonts are located in /usr/share/kbd/consolefonts/ and can likewise be
 
 If UEFI mode is enabled on an UEFI motherboard, Archiso will boot Arch Linux accordingly via systemd-boot. To verify this, list the efivars directory:
 
-```
+```bash
 # ls /sys/firmware/efi/efivars
 ```
 
 ### Connect to the internet
 To set up a network connection, go through the following steps
 
-```
+```bash
 # ip link
 # ip addr
 ```
 
 Note: The installation image enables dhcpcd (dhcpcd@interface.service) for wired network devices on boot. The connection may be verified with ping:
 
-```
+```bash
 # ping archlinux.org
 ```
 
@@ -74,16 +80,16 @@ Note: The installation image enables dhcpcd (dhcpcd@interface.service) for w
 ### Update the system clock
 
 Use timedatectl(1) to ensure the system clock is accurate:
-```
+```bash
 # timedatectl set-ntp true
 ```
 
 To check the service status, use
-```
+```bash
 #  timedatectl status
 ```
 
-
+<br>
 
 ## PARTITION AND FORMAT THE DISK - BIOS
 
@@ -110,11 +116,13 @@ Use fdisk or even better cfdisk with the recommended Partitions:
 |  /dev/vda3     |  /            |  25G min        |   ext4          |
 |  /dev/vda4     |   /home       |  Rest of disk   |   ext4          |
 
-```
+<br>
+
+```bash
 # fdisk /dev/sda
 ```
 or cfdisk which is easier.
-```
+```bash
 # cfdisk /dev/sda
 ```
 
@@ -138,7 +146,7 @@ With:
 then: W to write partitions
 
 Check partitions
-```
+```bash
 # lsblk 
 ```
 
@@ -147,14 +155,14 @@ Check partitions
 
 Once the partitions have been created, each must be formatted with an appropriate file system.
 
-```
+```bash
 # mkfs.ext4 /dev/sda1
 # mkfs.ext4 /dev/sda3
 # mkfs.ext4 /dev/sda4
 ```
 
 If you created a partition for swap, initialize it with mkswap:
-```
+```bash
 # mkswap /dev/sda2
 # swapon /dev/sdb2
 ```
@@ -162,7 +170,7 @@ If you created a partition for swap, initialize it with mkswap:
 
 ### Mount the file systems (BIOS mode)
 
-```
+```bash
 # mount /dev/sda3 /mnt
 # mkdir /mnt/home
 # mkdir /mnt/boot
@@ -185,6 +193,8 @@ A GPT partition is required to boot in UEFI mode. Use tool: cgdisk
 |  /dev/vda3     |                  |  1G min          |   swap       |
 |  /dev/vda4     |   /home          |  Rest of disk    |   ext4       |
 
+<br>
+
 Note:
 - /boot/efi partition is labelled EF00. 
 - For swap, this is 8200
@@ -193,11 +203,11 @@ Note:
 ### Create Partitions (UEFI mode)
 
 Use cgdisk with /dev/vba
-```
+```bash
 # gdisk /dev/sda
 ```
 or
-```
+```bash
 # cgdisk /dev/sda
 ```
 
@@ -219,27 +229,29 @@ then 'w' - this will also create the GPT data.
 ### Format the partitions (UEFI mode)
 
 Once the partitions have been created, each must be formatted with an appropriate file system.
-```
-mkfs.ext4 /dev/vda1
-mkfs.fat -F32 /dev/vda2
-mkfs.ext4 /dev/vda4
+```bash
+# mkfs.ext4 /dev/vda1
+# mkfs.fat -F32 /dev/vda2
+# mkfs.ext4 /dev/vda4
 ```
 
 If you created a partition for swap, initialize it with mkswap:
-```
-mkswap /dev/sda3
-swapon /dev/sda3
+```bash
+# mkswap /dev/sda3
+# swapon /dev/sda3
 ```
 
 ### Mount the file systems (UEFI mode)
 
-```
-mount /dev/sda1 /mnt
-mkdir /mnt/{boot,boot/efi,home}
-mount /dev/sda2 /mnt/boot/efi
-mount /dev/sda4 /mnt/home
+```bash
+# mount /dev/sda1 /mnt
+# mkdir /mnt/{boot,boot/efi,home}
+# mount /dev/sda2 /mnt/boot/efi
+# mount /dev/sda4 /mnt/home
 ```
 
+
+<br>
 
 
 ## INSTALLATION
@@ -252,14 +264,14 @@ The higher a mirror is placed in the list, the more priority it is given when do
 This file will later be copied to the new system by pacstrap, so it is worth getting right.
 
 Mettre à jour
-```
+```bash
 # sudo pacman -Syyu
 ```
 
 
 ### Install essential packages
 
-```
+```bash
 # pacstrap /mnt base base-devel linux linux-firmware vim dhcpcd
 # pacstrap /mnt zip unzip p7zip mc alsa-utils syslog-ng mtools dosfstools lsb-release ntfs-3g exfat-utils bash-completion
 ```
@@ -272,16 +284,17 @@ Note:
 Bootloader
 
 For a boot using BIOS:
-```
-pacstrap /mnt grub os-prober
+```bash
+# pacstrap /mnt grub os-prober
 ```
 
 For a boot using UEFI:
-```
-pacstrap /mnt grub os-prober efibootmgr
+```bash
+# pacstrap /mnt grub os-prober efibootmgr
 ```
 
 
+<br>
 
 
 ## CONFIGURE THE SYSTEM
@@ -289,18 +302,15 @@ pacstrap /mnt grub os-prober efibootmgr
 ### Generate fstab
  
 Generate /etc/fstab file using UUID labels (and not /dev/sda names)
-
-```
+```bash
 # genfstab -U /mnt >> /mnt/etc/fstab
 ```
-
 
 
 ### Chroot
 
 Change root into the new system:
-
-```
+```bash
 # arch-chroot /mnt 
 ```
 
@@ -308,12 +318,12 @@ Change root into the new system:
 ### Configure Timezone
 
 In /usr/share/zoneinfo
-``` 
+```bash
 # ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime 
 ```
 
 Run hwclock(8) to generate /etc/adjtime:
-```
+```bash
 # hwclock --systohc --utc
 ```
 
@@ -323,12 +333,12 @@ Run hwclock(8) to generate /etc/adjtime:
 Edit /etc/locale.gen 
 uncomment en_US.UTF-8 and other needed locales. 
 Generate the locales by running:
-```
+```bash
 # locale-gen
 ```
 
 Create the locale.conf(5) file, and set the LANG variable accordingly:
-```
+```bash
 # vim /etc/locale.conf 
 LANG=en_US.UTF-8
 ```
@@ -337,7 +347,7 @@ LANG=en_US.UTF-8
 ### Network Configuration
 
 Configure Host name
-```
+```bash
 # vim /etc/hostname
 ```
 
@@ -356,7 +366,7 @@ If the system has a permanent IP address, it should be used instead of 127.0.1.
 ### Root password
 
 Set the root password:
-```
+```bash
 # passwd
 ```
 
@@ -364,60 +374,54 @@ Set the root password:
 ### Boot loader
 
 For installation using BIOS mode (Note: This is the disk, not the partition, so no number):
-```
-grub-install --no-floppy --recheck /dev/sda
+```bash
+# grub-install --no-floppy --recheck /dev/sda
 ```
 
 for installation in UEFI mode :
 La première ligne permet de vérifier un point de montage et de l’activer au besoin. La deuxième installe Grub. 
-```
-mount | grep efivars &> /dev/null || mount -t efivarfs efivarfs /sys/firmware/efi/efivars
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch_grub --recheck
+```bash
+# mount | grep efivars &> /dev/null || mount -t efivarfs efivarfs /sys/firmware/efi/efivars
+# grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch_grub --recheck
 ```
 
 In addition to that - to avoid any startup issue, especially with VirtualBox - add:
-```
-mkdir /boot/efi/EFI/boot
-cp /boot/efi/EFI/arch_grub/grubx64.efi /boot/efi/EFI/boot/bootx64.efi
+```bash
+# mkdir /boot/efi/EFI/boot
+# cp /boot/efi/EFI/arch_grub/grubx64.efi /boot/efi/EFI/boot/bootx64.efi
 ```
 
 generate grub config (new from grub 2:2.02-8):
-```
-grub-mkconfig -o /boot/grub/grub.cfg
+```bash
+# grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
 
 ### Network
 
-Pour le réseau, installer et activer NetworkManager est une bonne idée. Vous pouvez remplacer NetworkManager par le duo wicd et wicd-gtk en cas de problème. Pour wicd :
-```
-pacman -Syy wicd wicd-gtk
-systemctl enable wicd
-```
-
-Et pour Networkmanager :
-```
-pacman -Syy networkmanager
-systemctl enable NetworkManager
+Activate NetworkManager:
+```bash
+# pacman -Syy networkmanager
+# systemctl enable NetworkManager
 ```
 
 
 ### Reboot
 
 Exit the chroot environment by typing exit or pressing Ctrl+d.
-```
+```bash
 # exit
 ```
 
 Optionally manually unmount all the partitions with:
-```
+```bash
 # umount -R /mnt
 ```
 
 this allows noticing any "busy" partitions, and finding the cause with fuser(1).
 
 Finally, restart the machine by typing
-```
+```bash
 # reboot
 ```
 
