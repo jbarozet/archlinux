@@ -6,3 +6,6 @@ Installation Notes:
 - [Gnome](https://github.com/jbarozet/archlinux/blob/master/arch-install-part3.md)
 - [Gnome custom](https://github.com/jbarozet/archlinux/blob/master/arch-install-part4.md)
 - [Window Manager](https://github.com/jbarozet/archlinux/blob/master/arch-install-part5.md)
+
+Various notes:
+- [Base system](https://github.com/jbarozet/archlinux/blob/master/Network-and-Wireless.md)
