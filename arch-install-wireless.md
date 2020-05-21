@@ -6,6 +6,7 @@ Summary:
 - Once connectivity is established, install NetworkManager
 - Connect to network with NetworkManager
 
+<br>
 
 ## Connect to wireless with nettcl
 
@@ -31,6 +32,8 @@ At this point you have access to the network - Check by typing:
 # ping archlinux.org
 ```
 
+<br>
+
 ## Update package database and install NetworkManager
 
 Install and start NetManager
@@ -51,6 +54,7 @@ Stop netctl and wpa_supplicant
 # systemctl stop wpa_supplicant.service
 ```
 
+<br>
 
 ## Migrate to NetworkManager
 
@@ -101,6 +105,7 @@ Check Connections (--active to only list ones)
  Kmibey  a1900bed-baa9-47a3-affb-b640d0effe5d  802-11-wireless  wlp2s0
 ```
 
+<br>
 
 ## Troubleshooting
 

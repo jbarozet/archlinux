@@ -75,13 +75,14 @@ Notes:
 
 ## NetworkManager
 
-NetworkManager: https://wiki.archlinux.org/index.php/NetworkManager
-Connect to WiFi using nmcli: https://kifarunix.com/connect-to-wifi-in-linux-using-nmcli-command/
-nmtui: https://jlk.fjfi.cvut.cz/arch/manpages/man/nmtui.1
+Pointers:
+- NetworkManager: https://wiki.archlinux.org/index.php/NetworkManager
+- Connect to WiFi using nmcli: https://kifarunix.com/connect-to-wifi-in-linux-using-nmcli-command/
+- nmtui: https://jlk.fjfi.cvut.cz/arch/manpages/man/nmtui.1
 
 NetworkManager can be installed with the package networkmanager, which contains a daemon, a command line interface (nmcli) and a curses‐based interface (nmtui).
 
-For the most part, I find NetworkManager to be a preferable choice over netctl for desktop systems. It works, it integrates with GNOME and Plasma, it has a lot of user interfaces (nmtui being my favorite—a CLI version!), has support for OpenVPN, and many more.
+For the most part, I find NetworkManager to be a preferable choice over netctl for desktop systems. It works, it integrates with GNOME and Plasma, it has a lot of user interfaces, has support for OpenVPN, and many more.
 
 NetworkManager sits in the background and makes connections to known networks.  You need a tool to twist its knobs.  You need to be able to see the results of a site survey.  You need to be able to provide credentials. You need to be able to disconnect an access point, or force connection to another. 
 - There are command line tools (nmcli, nmtui).  There are GUI front ends (nm-applet, Gnome network-manager-applet, KDE plasma-nm.  There are front ends for dmenu (nmcli-dmenu)
@@ -152,9 +153,8 @@ Check Connections (--active to only list ones)
 ```bash
 # nmcli con show                               
  NAME    UUID                                  TYPE             DEVICE 
- Kmibey  a1900bed-baa9-47a3-affb-b640d0effe5d  802-11-wireless  wlp2s0
+ Livebox a1900bed-baa9-47a3-affb-b640d0effe5d  802-11-wireless  wlan0
 ```
-
 
 
 ### Delete Established Connections
@@ -164,20 +164,20 @@ If you need to delete the connection that is already established, you can specif
 ```bash
 # nmcli con sh
  NAME                UUID                                  TYPE             DEVICE 
- Kmibey              41dc9830-dd20-4deb-92be-371bfb5d16f0  802-11-wireless  wlp2s0 
+ Livebox             41dc9830-dd20-4deb-92be-371bfb5d16f0  802-11-wireless  wlan0 
  Beats               949762b0-c6e0-4004-918a-55fb6bcf6610  802-11-wireless  --
 ```
 
 To delete using a connection using connection name;
 ```bash
-# sudo nmcli con del Kmibey
- Connection 'Kmibey' (41dc9830-dd20-4deb-92be-371bfb5d16f0) successfully deleted.
+# sudo nmcli con del Livebox
+ Connection 'Livebox' (41dc9830-dd20-4deb-92be-371bfb5d16f0) successfully deleted.
 ```
 
 To delete a connection using connection UUID;
 ```bash
 # sudo nmcli con del 41dc9830-dd20-4deb-92be-371bfb5d16f0
- Connection 'Kmibey' (41dc9830-dd20-4deb-92be-371bfb5d16f0) successfully deleted.
+ Connection 'Livebox' (41dc9830-dd20-4deb-92be-371bfb5d16f0) successfully deleted.
 ```
 
 You can also take down or bring up a previous connection using the commands below respectively.
@@ -199,10 +199,12 @@ In order to connect to a wireless network with systemd-networkd, a wireless ada
 The systemd package is part of the default Arch installation and contains all needed files to operate a wired network. Wireless adapters can be setup by other services, such as wpa_supplicant
 
 
+<br>
+
 
 ## Troubleshooting
 
-If having issues
+If having issues ....
 
 Optional: You may have issues to start wireless profile, so this is a workaround.
 
