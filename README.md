@@ -8,4 +8,4 @@ Installation Notes:
 - [Window Manager](https://github.com/jbarozet/archlinux/blob/master/arch-install-part5.md)
 
 Various notes:
-- [Base system](https://github.com/jbarozet/archlinux/blob/master/Network-and-Wireless.md)
+- [Networking and wireless](https://github.com/jbarozet/archlinux/blob/master/Network-and-Wireless.md)
