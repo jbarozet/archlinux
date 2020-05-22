@@ -1,11 +1,15 @@
 # Arch Linux Installation
 
 Installation Notes:
-- [Base system](https://github.com/jbarozet/archlinux/blob/master/arch-install-part1.md)
-- [Finalize base system](https://github.com/jbarozet/archlinux/blob/master/arch-install-part2.md)
-- [Gnome](https://github.com/jbarozet/archlinux/blob/master/arch-install-part3.md)
-- [Gnome custom](https://github.com/jbarozet/archlinux/blob/master/arch-install-part4.md)
-- [Window Manager](https://github.com/jbarozet/archlinux/blob/master/arch-install-part5.md)
+- [Base system](https://github.com/jbarozet/archlinux/blob/master/01-arch-install-base.md)
+- [Finalize base system](https://github.com/jbarozet/archlinux/blob/master/02-arch-install-finalize.md)
+- [Gnome](https://github.com/jbarozet/archlinux/blob/master/03-arch-install-gnome.md)
+- [Gnome custom](https://github.com/jbarozet/archlinux/blob/master/04-arch-install-gnome-customization.md)
+- [Window Manager](https://github.com/jbarozet/archlinux/blob/master/05-arch-install-wm.md)
+- [Wireless Install](https://github.com/jbarozet/archlinux/blob/master/06-arch-install-wireless.md)
+- [Bootloader](https://github.com/jbarozet/archlinux/blob/master/07-arch-install-bootloader.md)
+- [Window Manager](https://github.com/jbarozet/archlinux/blob/master/08-arch-install-garbage.md)
+
 
 Various notes:
-- [Networking and wireless](https://github.com/jbarozet/archlinux/blob/master/Network-and-Wireless.md)
+- [Networking and wireless](https://github.com/jbarozet/archlinux/blob/master/20-networking-and-wireless.md)
