@@ -24,4 +24,6 @@ Install system:
 
 ## Package install
 
-- Optionally: add telepathy package. Add support for online accounts
+telepathy - Add support for online accounts
+xsane (pour le scanner), mais aussi unoconv (pour l’aperçu des fichiers dans Gnome Documents).
+

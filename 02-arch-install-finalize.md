@@ -133,6 +133,49 @@ EDITOR=vim visudo
 ```
 
 
+## AUR
+
+Installer Trizen ou Yay pour compléter Pacman.
+On peut utiliser trizen (écrit en perl) ou Yay (écrit en Go) à la place du vieillissant yaourt.
+
+Install Trizen :
+
+```
+sudo pacman -S git
+git clone https://aur.archlinux.org/trizen
+cd trizen
+makepkg -sri
+```
+
+Or install Yay :
+
+```
+sudo pacman -S git
+git clone https://aur.archlinux.org/yay
+cd yay
+makepkg -sri
+```
+
+
+## pamac
+
+Now to install Pamac:
+
+#install Pamac
+$ yay -S pamac-aur
+
+It will ask for some inputs.  I selected 1.) pamac-aur
+I removed dependencies after install
+I selected None on the next prompt.
+
+
+
+Note:
+	• Yaourt and Packer => AUR helpers
+	• Replaced par Yay - Yet Another Yaourt
+
+
+
 
 ## Enable Services
 

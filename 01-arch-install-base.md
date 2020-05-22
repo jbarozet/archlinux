@@ -174,8 +174,17 @@ If you created a partition for swap, initialize it with mkswap:
 
 ## PARTITION AND FORMAT THE DISK - UEFI MODE
 
+When recognized by the live system, disks are assigned to a block device such as /dev/sda, /dev/vda or /dev/nvme0n1. To identify these devices, use lsblk or fdisk. My Intel NUC: /dev/nvme0n1.
+
+The Unified Extensible Firmware Interface (UEFI or EFI for short) is a new model for the interface between operating systems and firmware. It provides a standard environment for booting an operating system and running pre-boot applications.
+
+It is distinct from the commonly used "MBR boot code" method followed for BIOS systems. See Arch boot process for their differences and the boot process using UEFI. To set up UEFI boot loaders, see Arch boot process#Boot loader. 
+
+In summary, 2 possible modes:
+- BIOS with MBR
+-  UEFI with GPT
+-  
 When recognized by the live system, disks are assigned to a block device such as /dev/sda, /dev/vda or /dev/nvme0n1. To identify these devices, use lsblk or fdisk.
-My Intel NUC: /dev/nvme0n1
 
 
 ### Partition the disks (UEFI mode)
@@ -199,7 +208,7 @@ Note:
 
 ### Create Partitions (UEFI mode)
 
-Use cgdisk with /dev/sda
+Use cgdisk with /dev/nvme0n1
 ```bash
 # cgdisk /dev/sda
 ```
@@ -222,24 +231,24 @@ Check partitions
 
 Format partitions:
 ```bash
-# mkfs.fat -F32 /dev/sda1
-# mkfs.ext4 /dev/sda3
-# mkfs.ext4 /dev/sda4
+# mkfs.fat -F32 /dev/nvme0n1p1
+# mkfs.ext4 /dev/nvme0n1p3
+# mkfs.ext4 /dev/nvme0n1p4
 ```
 
 If you created a partition for swap, initialize it with mkswap:
 ```bash
-# mkswap /dev/sda2
-# swapon /dev/sda2
+# mkswap /dev/nvme0n1p2
+# swapon /dev/nvme0n1p2
 ```
 
 ### Mount partitions
 
 ```bash
-# mount /dev/sda3 /mnt
+# mount /dev/nvme0n1p3 /mnt
 # mkdir /mnt/{boot,boot/efi,home}
-# mount /dev/sda1 /mnt/boot/efi
-# mount /dev/sda4 /mnt/home
+# mount /dev/nvme0n1p1 /mnt/boot/efi
+# mount /dev/nvme0n1p4 /mnt/home
 ```
 
 

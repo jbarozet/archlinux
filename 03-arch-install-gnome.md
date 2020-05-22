@@ -51,38 +51,10 @@ Reboot and you should have the login window automatically started:
 
 
 
-## AUR
-
-Installer Trizen ou Yay pour compléter Pacman.
-On peut utiliser trizen (écrit en perl) ou Yay (écrit en Go) à la place du vieillissant yaourt.
-
-Install Trizen :
-
-```
-sudo pacman -S git
-git clone https://aur.archlinux.org/trizen
-cd trizen
-makepkg -sri
-```
-
-Or install Yay :
-
-```
-sudo pacman -S git
-git clone https://aur.archlinux.org/yay
-cd yay
-makepkg -sri
-```
 
 
 
-## Add-ons
 
-xsane (pour le scanner), mais aussi unoconv (pour l’aperçu des fichiers dans Gnome Documents).
-
-```
-sudo pacman -S xsane unoconv
-```
 
 
 
