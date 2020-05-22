@@ -1,6 +1,7 @@
 # Arch Installation Part2 (Finalize)
 
 Once restarted, login as root.
+
 NetworkManager is installed (or wicd), so networking should work fine.
 
 Disable wpa_supplicant which will conflict with NetworkManager
@@ -54,7 +55,7 @@ Check Device status
 # nmcli dev status
 ```
 
-Check Connections (--active to only list ones)
+Check Connections (--active to only list active ones)
 ```bash
 # nmcli con show                               
  NAME    UUID                                  TYPE             DEVICE 
@@ -66,8 +67,8 @@ Check Connections (--active to only list ones)
 
 Adding NTP (Clock sync) and cronie (admin task automation)
 
-```
-pacman -Syy ntp cronie
+```bash
+# pacman -Syy ntp cronie
 ```
 
 If we want log in clear, then update file /etc/systemd/journald.conf and proceed with the following modifications. Replace:
@@ -80,29 +81,36 @@ with:
 ForwardToSyslog=yes
 ```
 
+<br>
 
 ## Video
 
-Install drivers for video cards. xf86-video-vesa package includes a lot of drivers.
-Check this for more information: https://wiki.archlinux.org/index.php/Xorg#Driver_installation
+Steps:
+- Install drivers for video cards. xf86-video-vesa package includes a lot of drivers.
+- Check this for more information: https://wiki.archlinux.org/index.php/Xorg#Driver_installation
 
 Nvidia 
 - check wiki ttps://wiki.archlinux.org/index.php/NVIDIA. 
 - ptimus : https://wiki.archlinux.org/index.php/NVIDIA_Optimus
 
-VirtualBox
-- In addition to xf86-video-vesa, install virtualbox-guest-utils
 
+```bash
+# pacman -S xf86-video-vesa
+# pacman -S virtualbox-guest-utils
 ```
-pacman -S xf86-video-vesa
-pacman -S virtualbox-guest-utils
+
+VirtualBox - In addition to xf86-video-vesa, install virtualbox-guest-utils
+  
+```bash
+# pacman -S virtualbox-guest-utils
 ```
 
 Enable kernel modules:
-```
-systemctl enable vboxservice
+```bash
+# systemctl enable vboxservice
 ```
 
+<br>
 
 ## Fonts
 
@@ -115,6 +123,8 @@ Luke Smith:
 - console: ttf-inconsolata
 - 
 
+<br>
+
 ## Create User
 
 Create a user and add to wheel group. Add password.
@@ -124,6 +134,7 @@ Create a user and add to wheel group. Add password.
 # passwd jmb
 ```
 
+<br>
 
 ## Modify SUDOERS
 
@@ -132,71 +143,58 @@ To give access to sudo command, change the sudoers using command visudo. Do not 
 EDITOR=vim visudo
 ```
 
+<br>
 
 ## AUR
 
-Installer Trizen ou Yay pour compléter Pacman.
-On peut utiliser trizen (écrit en perl) ou Yay (écrit en Go) à la place du vieillissant yaourt.
+To manage AUR packages, install Trizen or Yay.
 
 Install Trizen :
-
-```
-sudo pacman -S git
-git clone https://aur.archlinux.org/trizen
-cd trizen
-makepkg -sri
-```
-
-Or install Yay :
-
-```
-sudo pacman -S git
-git clone https://aur.archlinux.org/yay
-cd yay
-makepkg -sri
+```bash
+# sudo pacman -S git
+# git clone https://aur.archlinux.org/trizen
+# cd trizen
+# makepkg -sri
 ```
 
+Or install Yay:
+```bash
+# sudo pacman -S git
+# git clone https://aur.archlinux.org/yay
+# cd yay
+# makepkg -sri
+```
 
-## pamac
+<br>
 
-Now to install Pamac:
+## pamac (pacman graphical interface)
 
-#install Pamac
-$ yay -S pamac-aur
+To install Pamac:
 
-It will ask for some inputs.  I selected 1.) pamac-aur
-I removed dependencies after install
-I selected None on the next prompt.
+```bash
+# yay -S pamac-aur
+```
 
-
+It will ask for some inputs.  
+- I selected 1.) pamac-aur
+- I removed dependencies after install
+- I selected None on the next prompt.
 
 Note:
-	• Yaourt and Packer => AUR helpers
-	• Replaced par Yay - Yet Another Yaourt
+- Yaourt and Packer => AUR helpers
+- Replaced par Yay - Yet Another Yaourt
 
-
-
+<br>
 
 ## Enable Services
 
 systemd being used, here is a list of services that may have to be activated:
 - syslog
 - cron
-- avahi, avahi-dnsconfd: CUPS
-- org.cups.cupsd: printers
-- bluetooth
 - NTP to synchronize clock from the network
 
 ```
-systemctl enable syslog-ng@default
 systemctl enable cronie
-systemctl enable avahi-daemon
-systemctl enable avahi-dnsconfd
-systemctl enable org.cups.cupsd
-systemctl enable bluetooth
 systemctl enable ntpd
 ```
-
-
-Check bluetooth and syslog
 

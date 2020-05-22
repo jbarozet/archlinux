@@ -10,6 +10,7 @@ Installation Notes:
 - [Bootloader](https://github.com/jbarozet/archlinux/blob/master/07-arch-install-bootloader.md)
 - [Window Manager](https://github.com/jbarozet/archlinux/blob/master/08-arch-install-garbage.md)
 
-
 Various notes:
 - [Networking and wireless](https://github.com/jbarozet/archlinux/blob/master/20-networking-and-wireless.md)
+- [pacman notes](https://github.com/jbarozet/archlinux/blob/master/21-pacman-notes.md)
+- [zsh with Oh My Zsh](https://github.com/jbarozet/archlinux/blob/master/22-zsh-config.md)
