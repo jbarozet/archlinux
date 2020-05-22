@@ -3,6 +3,67 @@
 Once restarted, login as root.
 NetworkManager is installed (or wicd), so networking should work fine.
 
+Disable wpa_supplicant which will conflict with NetworkManager
+```bash
+# systemctl stop wpa_supplicant
+# systemctl disable wpa_supplicant
+```
+
+## Wired connection
+
+You should be good to go. Check that you have an IP Address with:
+```bash
+# ip addr
+```
+
+
+## Wireless connection
+
+Check if WiFi radio status. This can be done by executing the command below;
+```bash
+# nmcli radio wifi
+```
+
+If the WiFi radio is disabled, then you can enable it by running the command below;
+```bash
+# nmcli radio wifi on
+```
+
+Check status of network interfaces
+```bash
+# nmcli dev status                 
+```
+
+Display the list of SSID
+```bash
+# nmcli dev wifi list
+```
+
+ If SSID not listed, rescan
+```bash
+# nmcli dev wifi rescan
+```
+
+Connect to WiFi
+```bash
+# nmcli dev wifi connect Livebox-B00A password 'mypassword'
+```
+
+Check Device status
+```bash
+# nmcli dev status
+```
+
+Check Connections (--active to only list ones)
+```bash
+# nmcli con show                               
+ NAME    UUID                                  TYPE             DEVICE 
+ Livebox a1900bed-baa9-47a3-affb-b640d0effe5d  802-11-wireless  wlan0
+```
+
+
+## Add NTP and Cron
+
 Adding NTP (Clock sync) and cronie (admin task automation)
 
 ```
@@ -93,4 +154,6 @@ systemctl enable bluetooth
 systemctl enable ntpd
 ```
 
+
+Check bluetooth and syslog
 

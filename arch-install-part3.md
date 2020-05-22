@@ -9,7 +9,6 @@
 ```
 
 Notes:
-- Optionally: add telepathy package. Add support for online accounts
 - gnome-software is now part of gnome meta package
 
 

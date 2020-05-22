@@ -5,7 +5,7 @@
 ## POINTERS
 
 [Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide)
-[Installation Guide - Fred Bezies](https://github.com/FredBezies/arch-tuto-installation/blob/master/install.md)
+
 
 <br>
 
@@ -63,15 +63,20 @@ If UEFI mode is enabled on an UEFI motherboard, Archiso will boot Arch Lin
 ```
 
 ### Connect to the internet
-To set up a network connection, go through the following steps
 
+The installation image enables dhcpcd (dhcpcd@interface.service) for wired network devices on boot. 
+
+If using a wireless interface, configure wireless settings. Use wifi-menu to generate the profile file in /etc/netctl/.
 ```bash
-# ip link
+# wifi-menu
+```
+
+Check that you have an IP address:
+```bash
 # ip addr
 ```
 
-Note: The installation image enables dhcpcd (dhcpcd@interface.service) for wired network devices on boot. The connection may be verified with ping:
-
+The connection may be verified with ping:
 ```bash
 # ping archlinux.org
 ```
@@ -93,7 +98,7 @@ To check the service status, use
 
 ## PARTITION AND FORMAT THE DISK - BIOS
 
-When recognized by the live system, disks are assigned to a block device such as /dev/sda or /dev/nvme0n1. To identify these devices, use lsblk or fdisk. 
+When recognized by the live system, disks are assigned to a block device such as /dev/sda, /dev/vda or /dev/nvme0n1. To identify these devices, use lsblk or fdisk. 
 
 The Unified Extensible Firmware Interface (UEFI or EFI for short) is a new model for the interface between operating systems and firmware. It provides a standard environment for booting an operating system and running pre-boot applications.
 
@@ -118,32 +123,19 @@ Use fdisk or even better cfdisk with the recommended Partitions:
 
 <br>
 
-```bash
-# fdisk /dev/sda
-```
-or cfdisk which is easier.
+Create partitions with cfdisk.
 ```bash
 # cfdisk /dev/sda
 ```
 
-With cfdisk, pick option: dos
-Configure /boot as bootable
-
-With fdisk:
-- P to print partitions (display)
-- N for new partition
-
-Create 4 partitions with:
-- Partition1 => +200M (boot)
-- Partition2 => +1G (swap)
-- Partition3 => +25G (root)
-- Partition4 => Rest (home)
-
-With:
-- N for new partition
-- P for primary
-
-then: W to write partitions
+Steps:
+- Pick option: dos
+- Configure /boot as bootable
+- Create 4 primary partitions with:
+  * Partition1 => 200M (boot)
+  * Partition2 => 1G (swap)
+  * Partition3 => 25G (root)
+  * Partition4 => Rest (home)
 
 Check partitions
 ```bash
@@ -182,71 +174,71 @@ If you created a partition for swap, initialize it with mkswap:
 
 ## PARTITION AND FORMAT THE DISK - UEFI MODE
 
+When recognized by the live system, disks are assigned to a block device such as /dev/sda, /dev/vda or /dev/nvme0n1. To identify these devices, use lsblk or fdisk.
+My Intel NUC: /dev/nvme0n1
+
+
 ### Partition the disks (UEFI mode)
 
 A GPT partition is required to boot in UEFI mode. Use tool: cgdisk
 
-|    Partition   |     Mount        |       Size       |  File System |
-|----------------|------------------|:-----------------|:-------------|
-|  /dev/vda1     |   /              |  20G min         |   ext4       |
-|  /dev/vda2     |   /boot/efi      |  128M            |   fat32      |
-|  /dev/vda3     |                  |  1G min          |   swap       |
-|  /dev/vda4     |   /home          |  Rest of disk    |   ext4       |
+|    Partition   |     Mount     |      Size       |   File System   | Hex Code for GUID  |
+|--------------- |---------------|-----------------|-----------------|---------------------
+|  /dev/vda1     |   /boot/efi   |  512M           |     fat32       |        EF00        |
+|  /dev/vda2     |               |  4G             |     swap        |        8200        |
+|  /dev/vda3     |   /           |  25G min        |     ext4        |        8300        |
+|  /dev/vda4     |   /home       |  Rest of disk   |     ext4        |        8300        |
 
 <br>
 
 Note:
 - /boot/efi partition is labelled EF00. 
 - For swap, this is 8200
+- For linux, this 8300
 
 
 ### Create Partitions (UEFI mode)
 
-Use cgdisk with /dev/vba
-```bash
-# gdisk /dev/sda
-```
-or
+Use cgdisk with /dev/sda
 ```bash
 # cgdisk /dev/sda
 ```
 
-Partition1 - Boot
-- First Sector: <enter>
-- Last sector: +512M
-- Hex code for GUID: EF00 
-- => (EFI System)
+Resulting partitions for Intel NUC
+- partition1 = /dev/nvme0n1p1
+- partition2 = /dev/nvme0n1p2
+- partition3 = /dev/nvme0n1p3
+- partition4 = /dev/nvme0n1p4
+ 
+Writing partitions will also create the GPT data.
 
-Partition2 - Linux file system
-- First Sector: <enter>
-- Last sector: +512M
-- Hex code for GUID: <enter> 
-- => (Linux filesystem)
-
-then 'w' - this will also create the GPT data.
+Check partitions
+```bash
+# lsblk 
+```
 
 
 ### Format the partitions (UEFI mode)
 
-Once the partitions have been created, each must be formatted with an appropriate file system.
+Format partitions:
 ```bash
-# mkfs.ext4 /dev/vda1
-# mkfs.fat -F32 /dev/vda2
-# mkfs.ext4 /dev/vda4
+# mkfs.fat -F32 /dev/sda1
+# mkfs.ext4 /dev/sda3
+# mkfs.ext4 /dev/sda4
 ```
 
 If you created a partition for swap, initialize it with mkswap:
 ```bash
-# mkswap /dev/sda3
-# swapon /dev/sda3
+# mkswap /dev/sda2
+# swapon /dev/sda2
 ```
 
-### Mount the file systems (UEFI mode)
+### Mount partitions
 
 ```bash
-# mount /dev/sda1 /mnt
+# mount /dev/sda3 /mnt
 # mkdir /mnt/{boot,boot/efi,home}
-# mount /dev/sda2 /mnt/boot/efi
+# mount /dev/sda1 /mnt/boot/efi
 # mount /dev/sda4 /mnt/home
 ```
 
@@ -263,22 +255,16 @@ Packages to be installed must be downloaded from mirror servers, which are defi
 The higher a mirror is placed in the list, the more priority it is given when downloading a package. You may want to edit the file accordingly, and move the geographically closest mirrors to the top of the list, although other criteria should be taken into account.
 This file will later be copied to the new system by pacstrap, so it is worth getting right.
 
-Mettre à jour
-```bash
-# sudo pacman -Syyu
-```
-
 
 ### Install essential packages
 
 ```bash
-# pacstrap /mnt base base-devel linux linux-firmware vim dhcpcd
-# pacstrap /mnt zip unzip p7zip mc alsa-utils syslog-ng mtools dosfstools lsb-release ntfs-3g exfat-utils bash-completion
+# pacstrap /mnt base base-devel linux linux-firmware vim exfat-utils bash-completion
 ```
 
 Note:
-- exfat-utils pour la prise en charge des cartes SD de grande capacité.
-- Si vous êtes sur un pc portable, l’ajout de tlp est conseillé pour améliorer l’autonomie de la batterie. Plus d’info sur cette page [ArchWiki TLP](https://wiki.archlinux.org/index.php/TLP)
+- for high capacity SD card: add exfat-utils.
+- For laptops: tlp is used to improve battery life. More on [ArchWiki TLP](https://wiki.archlinux.org/index.php/TLP)
 
 
 Bootloader
@@ -371,30 +357,82 @@ Set the root password:
 ```
 
 
-### Boot loader
+### Boot loader - Using GRUB
 
 For installation using BIOS mode (Note: This is the disk, not the partition, so no number):
 ```bash
 # grub-install --no-floppy --recheck /dev/sda
 ```
 
-for installation in UEFI mode :
-La première ligne permet de vérifier un point de montage et de l’activer au besoin. La deuxième installe Grub. 
+For installation using UEFI mode:
 ```bash
 # mount | grep efivars &> /dev/null || mount -t efivarfs efivarfs /sys/firmware/efi/efivars
-# grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch_grub --recheck
+# grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 ```
 
-In addition to that - to avoid any startup issue, especially with VirtualBox - add:
-```bash
-# mkdir /boot/efi/EFI/boot
-# cp /boot/efi/EFI/arch_grub/grubx64.efi /boot/efi/EFI/boot/bootx64.efi
-```
-
-generate grub config (new from grub 2:2.02-8):
+Generate grub config (new from grub 2:2.02-8):
 ```bash
 # grub-mkconfig -o /boot/grub/grub.cfg
 ```
+
+
+
+
+### Option - Boot loader - Using bootctl (only for UEFI mode)
+
+[systemd-boot - bootctl](https://wiki.archlinux.org/index.php/Systemd-boot)
+
+```bash
+# bootctl install 
+```
+
+Will install 
+- /boot/EFI
+- /boot/EFI/systemd
+- /boot/EFI/BOOT
+- /boot/loader
+- /boot/loader/entries
+
+```bash
+# cd /boot
+```
+Check that linux is there (EFI, intramfslinux, vmlinuz-linux, loader)
+
+Loader configuration
+```bash
+# cd loader
+# vim loader.conf
+```
+
+remove all default lines there.
+
+And add:
+```
+default arch.conf
+timeout 4
+console-mode max
+editor   no
+```
+
+Adding loaders:
+```
+# cd entries
+# vim arch.conf
+```
+
+And add:
+```
+title Arch Linux
+linux /vmlinuz-linux
+initrd /initramfs-linux.img
+options root=PARTUUID=824523....  rw  (put in there /dev/vda3 PARTUUID)
+```
+
+Tip:
+- use vim
+- read the output of the command blkid
+- :r !blkid
+
 
 
 ### Network
