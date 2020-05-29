@@ -83,32 +83,7 @@ ForwardToSyslog=yes
 
 <br>
 
-## Video
 
-Steps:
-- Install drivers for video cards. xf86-video-vesa package includes a lot of drivers.
-- Check this for more information: https://wiki.archlinux.org/index.php/Xorg#Driver_installation
-
-Nvidia 
-- check wiki ttps://wiki.archlinux.org/index.php/NVIDIA. 
-- ptimus : https://wiki.archlinux.org/index.php/NVIDIA_Optimus
-
-
-```bash
-# pacman -S xf86-video-vesa
-# pacman -S virtualbox-guest-utils
-```
-
-VirtualBox - In addition to xf86-video-vesa, install virtualbox-guest-utils
-  
-```bash
-# pacman -S virtualbox-guest-utils
-```
-
-Enable kernel modules:
-```bash
-# systemctl enable vboxservice
-```
 
 <br>
 
