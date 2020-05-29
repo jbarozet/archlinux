@@ -5,7 +5,7 @@
 ## POINTERS
 
 [Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide)
-
+[How to install Arch Linux](https://wiki.learnlinux.tv/index.php/How_to_Install_Arch_Linux)
 
 <br>
 
@@ -106,7 +106,7 @@ It is distinct from the commonly used "MBR boot code" method followed for BIOS s
 
 In summary, 2 possible modes:
 - BIOS with MBR
--  UEFI with GPT
+- UEFI with GPT
 
 For more information: [Arch Boot Process](https://wiki.archlinux.org/index.php/Arch_boot_process)
 
@@ -157,17 +157,6 @@ If you created a partition for swap, initialize it with mkswap:
 ```bash
 # mkswap /dev/sda2
 # swapon /dev/sdb2
-```
-
-
-### Mount the file systems (BIOS mode)
-
-```bash
-# mount /dev/sda3 /mnt
-# mkdir /mnt/home
-# mkdir /mnt/boot
-# mount /dev/sda1 /mnt/boot
-# mount /dev/sda4 /mnt/home
 ```
 
 
@@ -242,7 +231,24 @@ If you created a partition for swap, initialize it with mkswap:
 # swapon /dev/nvme0n1p2
 ```
 
-### Mount partitions
+<br>
+
+
+## MOUNT PARTITIONS
+
+Pick BIOS or UEFI mode.
+
+### Mount the file systems (BIOS mode)
+
+```bash
+# mount /dev/sda3 /mnt
+# mkdir /mnt/home
+# mkdir /mnt/boot
+# mount /dev/sda1 /mnt/boot
+# mount /dev/sda4 /mnt/home
+```
+
+### Mount the file systems (UEFI Mode)
 
 ```bash
 # mount /dev/nvme0n1p3 /mnt
@@ -250,6 +256,7 @@ If you created a partition for swap, initialize it with mkswap:
 # mount /dev/nvme0n1p1 /mnt/boot/efi
 # mount /dev/nvme0n1p4 /mnt/home
 ```
+
 
 
 <br>
@@ -267,8 +274,17 @@ This file will later be copied to the new system by pacstrap, so it is worth ge
 
 ### Install essential packages
 
+Install base system
 ```bash
-# pacstrap /mnt base base-devel linux linux-firmware vim exfat-utils bash-completion
+# pacstrap /mnt base base-devel
+```
+Install linux (use linux-tls if you want LTS kernel. You can also install both if you want to have a choice at boot)
+```bash
+# pacstrap /mnt linux linux-firmware
+```
+Install add-ons
+```bash
+# pacstrap /mnt vim exfat-utils bash-completion
 ```
 
 Note:
@@ -276,7 +292,7 @@ Note:
 - For laptops: tlp is used to improve battery life. More on [ArchWiki TLP](https://wiki.archlinux.org/index.php/TLP)
 
 
-Bootloader
+Install Bootloader
 
 For a boot using BIOS:
 ```bash
@@ -453,6 +469,73 @@ Activate NetworkManager:
 ```
 
 
+
+### Couple of additional packages
+
+Install CPU Microde files (AMD CPU)
+```bash
+# pacman -S amd-ucode
+```
+
+Install CPU Microde files (Intel CPU)
+```bash
+# pacman -S intel-ucode
+```
+
+Install Xorg if you plan on having a GUI
+```bash
+# pacman -S xorg-server
+```
+
+
+### Video
+
+Steps:
+- Install drivers for video cards. xf86-video-vesa package includes a lot of drivers.
+- Check this for more information: https://wiki.archlinux.org/index.php/Xorg#Driver_installation
+
+Nvidia 
+- check wiki ttps://wiki.archlinux.org/index.php/NVIDIA. 
+- optimus : https://wiki.archlinux.org/index.php/NVIDIA_Optimus
+
+
+```bash
+# pacman -S xf86-video-vesa
+```
+
+Install Nvidia Driver packages if you have an Nvidia GPU
+```bash
+# pacman -S nvidia nvidia-utils
+```
+
+Note: Install nvidia-lts if you've installed the LTS kernel:
+```bash
+# pacman -S nvidia-lts
+```
+
+Install 3D support for Intel or AMD graphics
+
+If you have an Intel or AMD GPU, install the mesa package:
+```bash
+# pacman -S mesa
+```
+
+
+VirtualBox - In addition to xf86-video-vesa, install virtualbox-guest-utils
+  
+```bash
+# pacman -S virtualbox-guest-utils xf86-video-vmware
+```
+
+Enable kernel modules:
+```bash
+# systemctl enable vboxservice
+```
+
+
+
+
+
 ### Reboot
 
 Exit the chroot environment by typing exit or pressing Ctrl+d.
@@ -474,5 +557,34 @@ Finally, restart the machine by typing
 
 Any partitions still mounted will be automatically unmounted by systemd. Remember to remove the installation media and then login into the new system with the root account.
 
+
+
+
+
+## APPENDIX - Alternative way for swap
+
+Instead of creating a swap partition, another option is to simply create a file that you can easily expand if needed.
+
+Create swap file
+```bash
+# fallocate -l 2G /swapfile
+# chmod 600 /swapfile
+# mkswap /swapfile
+```
+
+Back up the /etc/fstab file
+```bash
+# cp /etc/fstab /etc/fstab.bak
+```
+
+Add the swap file to the /etc/fstab file
+```bash
+# echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
+```
+
+Check the /etc/fstab file to make sure it includes all the right partitions
+```bash
+# cat /etc/fstab
+```
 
 
