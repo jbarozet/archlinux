@@ -156,6 +156,12 @@ Check Connections (--active to only list ones)
  Livebox a1900bed-baa9-47a3-affb-b640d0effe5d  802-11-wireless  wlan0
 ```
 
+To see details for a specific connection:
+```bash
+# nmcli connection show Livebox-B00A
+```
+
+
 
 ### Delete Established Connections
 

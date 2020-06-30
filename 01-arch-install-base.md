@@ -1,3 +1,7 @@
+% Arch Installation
+% Jean-Marc Barozet
+% 06/06/2020
+
 # Arch Installation Part1 (Base System)
 
 <br>
@@ -20,8 +24,13 @@ Note:
 Find out the name of your USB drive with lsblk (or df). Make sure that it is not mounted.
 
 Run the following command, replacing /dev/sdx with your drive, e.g. /dev/sdb. (Do not append a partition number, so do not use something like /dev/sdb1) 
+
 ```bash
 # sudo dd bs=4M if=/home/jmb/softwares/archlinux-2020.05.01-x86_64.iso of=/dev/sda status=progress oflag=sync
+```
+
+```bash
+# sudo dd bs=4M if=/home/jmb/softwares/archlabs-2020.05.04.iso of=/dev/sda status=progress oflag=sync
 ```
 
 Check that you have the USB disk correctly partionned:
