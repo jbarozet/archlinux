@@ -1,7 +1,3 @@
-% Arch Installation
-% Jean-Marc Barozet
-% 06/06/2020
-
 # Arch Installation Part1 (Base System)
 
 <br>
