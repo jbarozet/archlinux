@@ -56,9 +56,9 @@ The default console keymap is US. Available layouts can be listed with:
 # ls /usr/share/kbd/keymaps/**/*.map.gz
 ```
 
-To modify the layout, append a corresponding file name to loadkeys(1), omitting path and file extension. For example, to set a German keyboard layout:
+To modify the layout, append a corresponding file name to loadkeys(1), omitting path and file extension. For example, to set a French keyboard layout:
 ```bash
-# loadkeys de-latin1
+# loadkeys fr
 ```
 Console fonts are located in /usr/share/kbd/consolefonts/ and can likewise be set with setfont(8).
 
@@ -361,6 +361,12 @@ Create the locale.conf(5) file, and set the LANG variable accordingly:
 ```bash
 # vim /etc/locale.conf 
 LANG=en_US.UTF-8
+```
+
+To have the frennch keyboard, create file /etc/vconsole.conf:
+```
+KEYMAP=fr-latin9
+FONT=eurlatgr
 ```
 
 
