@@ -363,7 +363,7 @@ Create the locale.conf(5) file, and set the LANG variable accordingly:
 LANG=en_US.UTF-8
 ```
 
-To have the frennch keyboard, create file /etc/vconsole.conf:
+To have the french keyboard, create file /etc/vconsole.conf:
 ```
 KEYMAP=fr-latin9
 FONT=eurlatgr
