@@ -4,9 +4,9 @@
 
 ## POINTERS
 
-[Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide)
-[How to install Arch Linux](https://wiki.learnlinux.tv/index.php/How_to_Install_Arch_Linux)
-
+[archlinux.org - Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide)
+[LearnLinux wiki - How to install Arch Linux](https://wiki.learnlinux.tv/index.php/How_to_Install_Arch_Linux)
+[Average Linux User - Arch Linux Installation 2020](https://averagelinuxuser.com/a-step-by-step-arch-linux-installation-guide/)
 <br>
 
 ## PREPARE USB INSTALLATION KEY
@@ -22,11 +22,7 @@ Find out the name of your USB drive with lsblk (or df). Make sure that it is not
 Run the following command, replacing /dev/sdx with your drive, e.g. /dev/sdb. (Do not append a partition number, so do not use something like /dev/sdb1) 
 
 ```bash
-# sudo dd bs=4M if=/home/jmb/softwares/archlinux-2020.05.01-x86_64.iso of=/dev/sda status=progress oflag=sync
-```
-
-```bash
-# sudo dd bs=4M if=/home/jmb/softwares/archlabs-2020.05.04.iso of=/dev/sda status=progress oflag=sync
+# sudo dd bs=4M if=/path/to/archlinux.iso of=/dev/sda status=progress oflag=sync
 ```
 
 Check that you have the USB disk correctly partionned:
@@ -101,19 +97,23 @@ To check the service status, use
 
 <br>
 
-## PARTITION AND FORMAT THE DISK - BIOS
+## PARTITION AND FORMAT THE DISK - OVERVIEW
 
 When recognized by the live system, disks are assigned to a block device such as /dev/sda, /dev/vda or /dev/nvme0n1. To identify these devices, use lsblk or fdisk. 
 
 The Unified Extensible Firmware Interface (UEFI or EFI for short) is a new model for the interface between operating systems and firmware. It provides a standard environment for booting an operating system and running pre-boot applications.
 
-It is distinct from the commonly used "MBR boot code" method followed for BIOS systems. See Arch boot process for their differences and the boot process using UEFI. To set up UEFI boot loaders, see Arch boot process#Boot loader. 
+It is distinct from the commonly used "MBR boot code" method followed for BIOS systems. See Arch boot process for their differences and the boot process using UEFI. To set up UEFI boot loaders, see Arch boot process loader. 
 
 In summary, 2 possible modes:
 - BIOS with MBR
 - UEFI with GPT
 
 For more information: [Arch Boot Process](https://wiki.archlinux.org/index.php/Arch_boot_process)
+
+<br>
+
+## PARTITION AND FORMAT THE DISK - BIOS
 
 ### Partition the disks (BIOS mode)
 
@@ -168,25 +168,12 @@ If you created a partition for swap, initialize it with mkswap:
 
 ## PARTITION AND FORMAT THE DISK - UEFI MODE
 
-When recognized by the live system, disks are assigned to a block device such as /dev/sda, /dev/vda or /dev/nvme0n1. To identify these devices, use lsblk or fdisk. My Intel NUC: /dev/nvme0n1.
-
-The Unified Extensible Firmware Interface (UEFI or EFI for short) is a new model for the interface between operating systems and firmware. It provides a standard environment for booting an operating system and running pre-boot applications.
-
-It is distinct from the commonly used "MBR boot code" method followed for BIOS systems. See Arch boot process for their differences and the boot process using UEFI. To set up UEFI boot loaders, see Arch boot process#Boot loader. 
-
-In summary, 2 possible modes:
-- BIOS with MBR
--  UEFI with GPT
--  
-When recognized by the live system, disks are assigned to a block device such as /dev/sda, /dev/vda or /dev/nvme0n1. To identify these devices, use lsblk or fdisk.
-
-
 ### Partition the disks (UEFI mode)
 
 A GPT partition is required to boot in UEFI mode. Use tool: cgdisk
 
 |    Partition   |     Mount     |      Size       |   File System   | Hex Code for GUID  |
-|--------------- |---------------|-----------------|-----------------|---------------------
+|--------------- |---------------|-----------------|-----------------|---------------------|
 |  /dev/vda1     |   /boot/efi   |  512M           |     fat32       |        EF00        |
 |  /dev/vda2     |               |  4G             |     swap        |        8200        |
 |  /dev/vda3     |   /           |  25G min        |     ext4        |        8300        |
@@ -212,7 +199,7 @@ Resulting partitions for Intel NUC
 - partition2 = /dev/nvme0n1p2
 - partition3 = /dev/nvme0n1p3
 - partition4 = /dev/nvme0n1p4
- 
+
 Writing partitions will also create the GPT data.
 
 Check partitions
@@ -316,7 +303,7 @@ For a boot using UEFI:
 ## CONFIGURE THE SYSTEM
 
 ### Generate fstab
- 
+
 Generate /etc/fstab file using UUID labels (and not /dev/sda names)
 ```bash
 # genfstab -U /mnt >> /mnt/etc/fstab
@@ -403,7 +390,7 @@ For installation using BIOS mode (Note: This is the disk, not the partition, so 
 For installation using UEFI mode:
 ```bash
 # mount | grep efivars &> /dev/null || mount -t efivarfs efivarfs /sys/firmware/efi/efivars
-# grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
+# grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB --removable
 ```
 
 Generate grub config (new from grub 2:2.02-8):
@@ -533,7 +520,7 @@ If you have an Intel or AMD GPU, install the mesa package:
 
 
 VirtualBox - In addition to xf86-video-vesa, install virtualbox-guest-utils
-  
+
 ```bash
 # pacman -S virtualbox-guest-utils xf86-video-vmware
 ```
