@@ -4,9 +4,9 @@
 
 ## POINTERS
 
-[archlinux.org - Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide)
 [LearnLinux wiki - How to install Arch Linux](https://wiki.learnlinux.tv/index.php/How_to_Install_Arch_Linux)
 [Average Linux User - Arch Linux Installation 2020](https://averagelinuxuser.com/a-step-by-step-arch-linux-installation-guide/)
+
 <br>
 
 ## PREPARE USB INSTALLATION KEY
@@ -55,6 +55,7 @@ To modify the layout, append a corresponding file name to loadkeys(1), omitting
 Console fonts are located in /usr/share/kbd/consolefonts/ and can likewise be set with setfont(8).
 
 
+
 ### Verify the boot mode
 
 If UEFI mode is enabled on an UEFI motherboard, Archiso will boot Arch Linux accordingly via systemd-boot. To verify this, list the efivars directory:
@@ -63,16 +64,58 @@ If UEFI mode is enabled on an UEFI motherboard, Archiso will boot Arch Lin
 # ls /sys/firmware/efi/efivars
 ```
 
+
+
 ### Connect to the internet
 
 The installation image enables dhcpcd (dhcpcd@interface.service) for wired network devices on boot. 
 
-If using a wireless interface, configure wireless settings. Use wifi-menu to generate the profile file in /etc/netctl/.
+If using a wireless interface, configure wireless settings. 
+
+Up to ArchLinux 20.3 (July 2020), Use wifi-menu to generate the profile file in /etc/netctl/.
+
 ```bash
 # wifi-menu
 ```
 
+From 20.3 and above, **wifi-menu** and **netctl** are not included anymore in the iso, there is a new tool called **iwd**.
+
+Get the wifi interface name
+```
+# iwctl
+[iwd]# device list
+                                  Devices
+----------------------------------------------------------------------------
+Name                 Address            Powered   Adapter    Mode
+----------------------------------------------------------------------------
+wlan0                4c:32:75:93:32:b5  on        phy0       station
+[iwd]#
+```
+
+Scan wifi interface
+```
+[iwd]# station wlan0 scan
+```
+
+Display SSIDs
+```
+[iwd]# station wlan0 get-networks
+                     Available Networks
+-------------------------------------------------------
+  Network name                 Security   Signal
+-------------------------------------------------------
+  > Livebox-XXXX                psk       ****
+
+[iwd]#
+```
+Then connect to your SSID
+```
+[iwd]# station wlan0 connect Livebox-XXXX
+[iwd]# exit
+```
+
 Check that you have an IP address:
+
 ```bash
 # ip addr
 ```
@@ -81,6 +124,7 @@ The connection may be verified with ping:
 ```bash
 # ping archlinux.org
 ```
+
 
 
 ### Update the system clock
