@@ -8,9 +8,12 @@ Summary:
 
 <br>
 
-## Connect to wireless with nettcl
+## Option1 - Connect to wireless with nettcl
+
+Up to ArchLinux 20.3 (July 2020), Use wifi-menu to generate the profile file in /etc/netctl/.
 
 To get the name of your wireless interface do:
+
 ```bash
 # iw dev
 ```
@@ -27,6 +30,64 @@ Check you are successfully associated to your wifi:
 ```
 
 At this point you have access to the network - Check by typing:
+```bash
+# ping 8.8.8.8
+# ping archlinux.org
+```
+
+<br>
+
+## Option 2 - Connect to wireless using iwd
+
+From 20.3 and above, **wifi-menu** and **netctl** are not included anymore in the iso, there is a new tool called **iwd**.
+
+Get the wifi interface name
+
+```
+# iwctl
+[iwd]# device list
+                                  Devices
+----------------------------------------------------------------------------
+Name                 Address            Powered   Adapter    Mode
+----------------------------------------------------------------------------
+wlan0                4c:32:75:93:32:b5  on        phy0       station
+[iwd]#
+```
+
+Scan wifi interface
+
+```
+[iwd]# station wlan0 scan
+```
+
+Display SSIDs
+
+```
+[iwd]# station wlan0 get-networks
+                     Available Networks
+-------------------------------------------------------
+  Network name                 Security   Signal
+-------------------------------------------------------
+  > Livebox-XXXX                psk       ****
+
+[iwd]#
+```
+
+Then connect to your SSID
+
+```
+[iwd]# station wlan0 connect Livebox-XXXX
+[iwd]# exit
+```
+
+Check that you have an IP address:
+
+```bash
+# ip addr
+```
+
+At this point you have access to the network - Check by typing:
+
 ```bash
 # ping 8.8.8.8
 # ping archlinux.org
