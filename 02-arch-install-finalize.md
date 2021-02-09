@@ -10,6 +10,8 @@ Disable wpa_supplicant which will conflict with NetworkManager
 # systemctl disable wpa_supplicant
 ```
 
+<br>
+
 ## Wired connection
 
 You should be good to go. Check that you have an IP Address with:
@@ -17,6 +19,7 @@ You should be good to go. Check that you have an IP Address with:
 # ip addr
 ```
 
+<br>
 
 ## Wireless connection
 
@@ -62,6 +65,7 @@ Check Connections (--active to only list active ones)
  Livebox a1900bed-baa9-47a3-affb-b640d0effe5d  802-11-wireless  wlan0
 ```
 
+<br>
 
 ## Add NTP and Cron
 
@@ -80,10 +84,6 @@ with:
 ```
 ForwardToSyslog=yes
 ```
-
-<br>
-
-
 
 <br>
 

@@ -54,7 +54,7 @@ To modify the layout, append a corresponding file name to loadkeys(1), omitting
 ```
 Console fonts are located in /usr/share/kbd/consolefonts/ and can likewise be set with setfont(8).
 
-
+<br>
 
 ### Verify the boot mode
 
@@ -64,7 +64,7 @@ If UEFI mode is enabled on an UEFI motherboard, Archiso will boot Arch Lin
 # ls /sys/firmware/efi/efivars
 ```
 
-
+<br>
 
 ### Connect to the internet
 
@@ -125,7 +125,7 @@ The connection may be verified with ping:
 # ping archlinux.org
 ```
 
-
+<br>
 
 ### Update the system clock
 
@@ -208,7 +208,7 @@ If you created a partition for swap, initialize it with mkswap:
 # swapon /dev/sdb2
 ```
 
-
+<br>
 
 ## PARTITION AND FORMAT THE DISK - UEFI MODE
 
